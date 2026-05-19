@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimum Fit | Kinetic Diagnostic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e0e0e0; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .protocol-id { font-family: 'Courier New', Courier, monospace; }
+        .hidden { display: none; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        /* Flipboard Styles */
+        .flipboard-content {
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .flipboard-content.expanded { opacity: 1; }
+        
+        /* UI utility classes for taxonomy */
+        .border-subtle { border-color: #222; }
+        .bg-subtle { background-color: #111; }
+        .text-accent { color: #888; }
+        .shepherd-content { display: block; }
+        .wolf-content { display: none; } /* Hidden in default view */
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-6 space-y-8 py-12">
+
+    <!-- THE DIAGNOSTIC QUIZ -->
+    <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-8 md:p-12 rounded-sm shadow-2xl relative overflow-hidden">
+        
+        <div class="text-center mb-10 border-b border-[#222] pb-6">
+            <span class="protocol-id text-[#4CAF50] text-[10px] tracking-widest uppercase block mb-2">Pre-Flight Calibration</span>
+            <h1 class="text-3xl font-serif text-white tracking-tight">Kinetic Diagnostic</h1>
+            <p class="text-[#888] text-sm mt-2">Identify your baseline. Secure your architecture.</p>
+        </div>
+
+        <div id="quiz-container">
+            
+            <div id="q1" class="question-block">
+                <p class="protocol-id text-xs text-[#3b82f6] mb-3 tracking-widest uppercase">Phase 01: Core Activation</p>
+                <h2 class="text-xl text-white mb-6 leading-relaxed">What happens when you try to brace your core (e.g., when you cough or laugh hard)?</h2>
+                <div class="space-y-3">
+                    <button onclick="nextQ(1, 'A')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                        [ A ] I feel pressure in my lower back, or my stomach bulges outward.
+                    </button>
+                    <button onclick="nextQ(1, 'B')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                        [ B ] My stomach pulls flat inward, tight like a corset.
+                    </button>
+                </div>
+            </div>
+
+            <div id="q2" class="question-block hidden">
+                <p class="protocol-id text-xs text-[#3b82f6] mb-3 tracking-widest uppercase">Phase 02: Structural Integrity</p>
+                <h2 class="text-xl text-white mb-6 leading-relaxed">In the past 6 months, have you experienced lower back or neck pain during workouts?</h2>
+                <div class="space-y-3">
+                    <button onclick="nextQ(2, 'A')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                        [ A ] Yes, frequently. Or I am currently recovering from an injury.
+                    </button>
+                    <button onclick="nextQ(2, 'B')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                        [ B ] No, my joints are healthy and pain-free.
+                    </button>
+                </div>
+            </div>
+
+            <div id="q3" class="question-block hidden">
+                <p class="protocol-id text-xs text-[#3b82f6] mb-3 tracking-widest uppercase">Phase 03: The Objective</p>
+                <h2 class="text-xl text-white mb-6 leading-relaxed">What is your primary objective for the next 90 days?</h2>
+                <div class="space-y-3">
+                    <button onclick="calculateResult('A')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                        [ A ] To fix my posture, stop hurting, and learn how to use my body correctly.
+                    </button>
+                    <button onclick="calculateResult('B')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                        [ B ] To build athletic strength, tone up, and sweat.
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="result-container" class="hidden text-center fade-in">
+            <p class="protocol-id text-xs text-[#4CAF50] mb-3 tracking-widest uppercase">Diagnostic Complete</p>
+            <h2 id="result-title" class="text-3xl font-serif text-white mb-4">Class Allocation</h2>
+            <p id="result-desc" class="text-[#a3a3a3] text-sm leading-relaxed mb-8 max-w-md mx-auto">Description</p>
+            
+            <div class="p-4 border border-[#333] bg-[#111] inline-block text-left mb-8">
+                <p class="protocol-id text-[10px] text-[#888] tracking-widest uppercase mb-1">Status</p>
+                <p id="result-auth" class="text-[#e0e0e0] font-medium uppercase tracking-widest text-sm">AUTHORIZED</p>
+            </div>
+
+            <button onclick="location.reload()" class="block w-full border border-[#333] text-[#888] hover:text-white hover:border-[#888] py-3 text-xs uppercase tracking-widest transition-colors">Run New Diagnostic</button>
+        </div>
+
+    </div>
+
+    <!-- THE CLASS TAXONOMY REFERENCE (Included seamlessly for front-desk reference) -->
+    <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-8 md:p-12 rounded-sm shadow-2xl relative overflow-hidden">
+        <section class="space-y-6">
+            <h2 class="text-2xl font-serif italic text-white flex items-center justify-between border-b border-[#222] pb-4">
+                Class Taxonomy Matrix
+                <span class="text-[10px] font-sans text-accent not-italic font-light tracking-widest uppercase">Select to Expand</span>
+            </h2>
+            
+            <div class="space-y-4">
+                <!-- Level 1 -->
+                <div class="bg-subtle border border-subtle rounded-sm">
+                    <button class="w-full text-left p-5 flex items-center justify-between focus:outline-none hover:bg-[#1a1a1a]" onclick="toggleFlipboard(this)">
+                        <div class="flex items-center gap-6">
+                            <span class="protocol-id text-accent text-sm w-20">LEVEL 1</span>
+                            <h4 class="text-lg font-serif text-white">Optimum Control</h4>
+                        </div>
+                        <svg class="w-5 h-5 text-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="flipboard-content bg-[#0a0a0a] border-t border-subtle">
+                        <div class="shepherd-content p-6">
+                            <p class="text-sm text-[#a3a3a3] leading-relaxed mb-4"><strong>Vibe:</strong> Educational, safe, grounding.</p>
+                            <p class="text-sm text-[#a3a3a3] leading-relaxed">This is our entry-level class on the Mat/Chair or Basic Reformer. Focus purely on teaching clients how to breathe, find neutral pelvis, and isolate their deep core. Keep it slow. Make them feel safe.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 2 -->
+                <div class="bg-subtle border border-subtle rounded-sm">
+                    <button class="w-full text-left p-5 flex items-center justify-between focus:outline-none hover:bg-[#1a1a1a]" onclick="toggleFlipboard(this)">
+                        <div class="flex items-center gap-6">
+                            <span class="protocol-id text-[#3b82f6] text-sm w-20">LEVEL 2</span>
+                            <h4 class="text-lg font-serif text-white">Optimum Capacity</h4>
+                        </div>
+                        <svg class="w-5 h-5 text-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="flipboard-content bg-[#0a0a0a] border-t border-subtle">
+                        <div class="shepherd-content p-6">
+                            <p class="text-sm text-[#a3a3a3] leading-relaxed mb-4"><strong>Vibe:</strong> Athletic, challenging, sweat-inducing.</p>
+                            <p class="text-sm text-[#a3a3a3] leading-relaxed">This is our core Reformer class. We introduce spring tension and altered gravity. The goal is to safely load the muscles to build strength while maintaining the Iron Skeleton.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 3 -->
+                <div class="bg-subtle border border-[#ff9800]/30 rounded-sm">
+                    <button class="w-full text-left p-5 flex items-center justify-between focus:outline-none hover:bg-[#1a1a1a]" onclick="toggleFlipboard(this)">
+                        <div class="flex items-center gap-6">
+                            <span class="protocol-id text-[#ff9800] text-sm w-20">LEVEL 3</span>
+                            <h4 class="text-lg font-serif text-white">Optimum Flow State</h4>
+                        </div>
+                        <svg class="w-5 h-5 text-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="flipboard-content bg-[#0a0a0a] border-t border-subtle">
+                        <div class="shepherd-content p-6">
+                            <p class="text-sm text-[#a3a3a3] leading-relaxed mb-4"><strong>Vibe:</strong> Seamless, intense, euphoric.</p>
+                            <p class="text-sm text-[#a3a3a3] leading-relaxed">Advanced Reformer/Barrel class. High-endurance kinetic chain linking with minimal breaks. This class requires absolute room command.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let answers = { q1: '', q2: '', q3: '' };
+
+        function nextQ(current, answer) {
+            answers['q' + current] = answer;
+            document.getElementById('q' + current).classList.add('hidden');
+            document.getElementById('q' + (current + 1)).classList.remove('hidden');
+            document.getElementById('q' + (current + 1)).classList.add('fade-in');
+        }
+
+        function calculateResult(answer) {
+            answers['q3'] = answer;
+            document.getElementById('q3').classList.add('hidden');
+            
+            const resultBox = document.getElementById('result-container');
+            const rTitle = document.getElementById('result-title');
+            const rDesc = document.getElementById('result-desc');
+            const rAuth = document.getElementById('result-auth');
+
+            // The Routing Logic (Any 'A' = Control)
+            if(answers.q1 === 'A' || answers.q2 === 'A' || answers.q3 === 'A') {
+                rTitle.innerText = "Optimum Control";
+                rTitle.className = "text-3xl font-serif text-white mb-4";
+                rDesc.innerText = "Your TVA (Transversus Abdominis) requires mechanical alignment. You are routed to Optimum Control to rebuild your foundation, isolate your deep core, and eliminate kinetic friction. Do not add load until the structure is secure.";
+                rAuth.innerText = "LEVEL 1: CLEARED";
+            } else {
+                rTitle.innerText = "Optimum Capacity";
+                rTitle.className = "text-3xl font-serif text-[#3b82f6] mb-4";
+                rDesc.innerText = "Your baseline mechanics are stable. You are routed to Optimum Capacity to introduce altered gravity, spring tension, and athletic load. *Note: Flow State classes remain locked until you complete 10 Capacity sessions.*";
+                rAuth.innerText = "LEVEL 2: CLEARED";
+            }
+
+            resultBox.classList.remove('hidden');
+        }
+
+        // MISSING FUNCTION FIXED HERE: Handles the expanding/collapsing of taxonomy accordions
+        function toggleFlipboard(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('svg');
+            
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.classList.remove('expanded');
+                if(icon) icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                content.classList.add('expanded');
+                if(icon) icon.style.transform = 'rotate(180deg)';
+            }
+        }
+    </script>
+</body>
+</html>
