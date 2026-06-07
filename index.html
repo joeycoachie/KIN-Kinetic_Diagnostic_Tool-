@@ -10,11 +10,10 @@
         body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e0e0e0; }
         .font-serif { font-family: 'Playfair Display', serif; }
         .protocol-id { font-family: 'Courier New', Courier, monospace; }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        /* Flipboard Styles */
         .flipboard-content {
             transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out;
             max-height: 0;
@@ -22,18 +21,15 @@
             overflow: hidden;
         }
         .flipboard-content.expanded { opacity: 1; }
-        
-        /* UI utility classes for taxonomy */
         .border-subtle { border-color: #222; }
         .bg-subtle { background-color: #111; }
         .text-accent { color: #888; }
         .shepherd-content { display: block; }
-        .wolf-content { display: none; } /* Hidden in default view */
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-6 space-y-8 py-12">
 
-    <!-- THE DIAGNOSTIC QUIZ -->
+    <!-- THE DIAGNOSTIC -->
     <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-8 md:p-12 rounded-sm shadow-2xl relative overflow-hidden">
         
         <div class="text-center mb-10 border-b border-[#222] pb-6">
@@ -43,56 +39,98 @@
         </div>
 
         <div id="quiz-container">
-            
+            <!-- Q1 -->
             <div id="q1" class="question-block">
                 <p class="protocol-id text-xs text-[#3b82f6] mb-3 tracking-widest uppercase">Phase 01: Core Activation</p>
                 <h2 class="text-xl text-white mb-6 leading-relaxed">What happens when you try to brace your core (e.g., when you cough or laugh hard)?</h2>
                 <div class="space-y-3">
-                    <button onclick="nextQ(1, 'A')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                    <button onclick="nextQ(1, 'A')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
                         [ A ] I feel pressure in my lower back, or my stomach bulges outward.
                     </button>
-                    <button onclick="nextQ(1, 'B')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                    <button onclick="nextQ(1, 'B')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
                         [ B ] My stomach pulls flat inward, tight like a corset.
                     </button>
                 </div>
             </div>
 
+            <!-- Q2 -->
             <div id="q2" class="question-block hidden">
                 <p class="protocol-id text-xs text-[#3b82f6] mb-3 tracking-widest uppercase">Phase 02: Structural Integrity</p>
                 <h2 class="text-xl text-white mb-6 leading-relaxed">In the past 6 months, have you experienced lower back or neck pain during workouts?</h2>
                 <div class="space-y-3">
-                    <button onclick="nextQ(2, 'A')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                    <button onclick="nextQ(2, 'A')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
                         [ A ] Yes, frequently. Or I am currently recovering from an injury.
                     </button>
-                    <button onclick="nextQ(2, 'B')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                    <button onclick="nextQ(2, 'B')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
                         [ B ] No, my joints are healthy and pain-free.
                     </button>
                 </div>
             </div>
 
+            <!-- Q3 -->
             <div id="q3" class="question-block hidden">
                 <p class="protocol-id text-xs text-[#3b82f6] mb-3 tracking-widest uppercase">Phase 03: The Objective</p>
                 <h2 class="text-xl text-white mb-6 leading-relaxed">What is your primary objective for the next 90 days?</h2>
                 <div class="space-y-3">
-                    <button onclick="calculateResult('A')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                    <button onclick="showLeadForm('A')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
                         [ A ] To fix my posture, stop hurting, and learn how to use my body correctly.
                     </button>
-                    <button onclick="calculateResult('B')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                    <button onclick="showLeadForm('B')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
                         [ B ] To build athletic strength, tone up, and sweat.
                     </button>
                 </div>
             </div>
-
         </div>
 
+        <!-- THE GATE: LEAD CAPTURE FORM -->
+        <div id="lead-form-container" class="hidden fade-in">
+            <p class="protocol-id text-xs text-[#ff9800] mb-3 tracking-widest uppercase text-center">Diagnostic Processing</p>
+            <h2 class="text-2xl font-serif text-white mb-2 text-center">Unlock Your Tier Clearance</h2>
+            <p class="text-[#888] text-sm text-center mb-8">Enter your details to generate your biomechanical blueprint and authorize your class level.</p>
+
+            <!-- Hidden iframe to prevent page reload on submit -->
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted){showResults();}"></iframe>
+            
+            <!-- REPLACE 'YOUR_GOOGLE_APP_SCRIPT_URL' WITH YOUR ACTUAL DEPLOYED WEBHOOK URL -->
+            <form action="https://script.google.com/macros/s/AKfycbzCCvv7qxfTdkWghjqiaHn4XXWRlYN0Fno2fmwUAHPWUKsyycvMY-vGdphUKTGwAz-R/exec" method="POST" target="hidden_iframe" onsubmit="submitted=true;" class="max-w-sm mx-auto space-y-4 mb-4 text-left">
+                
+                <input type="hidden" name="Class_Result" id="hidden-class-result" value="">
+                
+                <div>
+                    <label class="protocol-id text-[10px] text-[#888] tracking-widest uppercase block mb-1">Full Name</label>
+                    <input type="text" name="Name" required class="w-full bg-[#050505] border border-[#333] text-white p-3 rounded-sm focus:outline-none focus:border-[#4CAF50] text-sm">
+                </div>
+                
+                <div>
+                    <label class="protocol-id text-[10px] text-[#888] tracking-widest uppercase block mb-1">WhatsApp Number</label>
+                    <div class="flex gap-2">
+                        <select name="Country_Code" class="bg-[#050505] border border-[#333] text-white p-3 rounded-sm focus:outline-none focus:border-[#4CAF50] text-sm w-[35%]">
+                            <option value="+60">🇲🇾 +60</option>
+                            <option value="+65">🇸🇬 +65</option>
+                            <option value="+62">🇮🇩 +62</option>
+                            <option value="+66">🇹🇭 +66</option>
+                            <option value="+86">🇨🇳 +86</option>
+                            <option value="+1">🇺🇸 +1</option>
+                            <option value="+44">🇬🇧 +44</option>
+                            <option value="+61">🇦🇺 +61</option>
+                        </select>
+                        <input type="tel" name="Phone" required placeholder="123456789" class="w-full bg-[#050505] border border-[#333] text-white p-3 rounded-sm focus:outline-none focus:border-[#4CAF50] text-sm flex-1">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-[#222] hover:bg-[#4CAF50] text-white py-4 rounded-sm transition-colors text-sm font-bold tracking-widest uppercase mt-4">Generate Blueprint</button>
+            </form>
+        </div>
+
+        <!-- THE PRIZE: RESULTS -->
         <div id="result-container" class="hidden text-center fade-in">
             <p class="protocol-id text-xs text-[#4CAF50] mb-3 tracking-widest uppercase">Diagnostic Complete</p>
             <h2 id="result-title" class="text-3xl font-serif text-white mb-4">Class Allocation</h2>
-            <p id="result-desc" class="text-[#a3a3a3] text-sm leading-relaxed mb-8 max-w-md mx-auto">Description</p>
+            <p id="result-desc" class="text-[#a3a3a3] text-sm leading-relaxed mb-6 max-w-md mx-auto">Description</p>
             
             <div class="p-4 border border-[#333] bg-[#111] inline-block text-left mb-8">
                 <p class="protocol-id text-[10px] text-[#888] tracking-widest uppercase mb-1">Status</p>
-                <p id="result-auth" class="text-[#e0e0e0] font-medium uppercase tracking-widest text-sm">AUTHORIZED</p>
+                <p id="result-auth" class="text-[#4CAF50] font-bold uppercase tracking-widest text-sm">AUTHORIZED</p>
             </div>
 
             <button onclick="location.reload()" class="block w-full border border-[#333] text-[#888] hover:text-white hover:border-[#888] py-3 text-xs uppercase tracking-widest transition-colors">Run New Diagnostic</button>
@@ -100,7 +138,7 @@
 
     </div>
 
-    <!-- THE CLASS TAXONOMY REFERENCE (Included seamlessly for front-desk reference) -->
+    <!-- TAXONOMY MATRIX -->
     <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-8 md:p-12 rounded-sm shadow-2xl relative overflow-hidden">
         <section class="space-y-6">
             <h2 class="text-2xl font-serif italic text-white flex items-center justify-between border-b border-[#222] pb-4">
@@ -109,7 +147,6 @@
             </h2>
             
             <div class="space-y-4">
-                <!-- Level 1 -->
                 <div class="bg-subtle border border-subtle rounded-sm">
                     <button class="w-full text-left p-5 flex items-center justify-between focus:outline-none hover:bg-[#1a1a1a]" onclick="toggleFlipboard(this)">
                         <div class="flex items-center gap-6">
@@ -121,12 +158,11 @@
                     <div class="flipboard-content bg-[#0a0a0a] border-t border-subtle">
                         <div class="shepherd-content p-6">
                             <p class="text-sm text-[#a3a3a3] leading-relaxed mb-4"><strong>Vibe:</strong> Educational, safe, grounding.</p>
-                            <p class="text-sm text-[#a3a3a3] leading-relaxed">This is our entry-level class on the Mat/Chair or Basic Reformer. Focus purely on teaching clients how to breathe, find neutral pelvis, and isolate their deep core. Keep it slow. Make them feel safe.</p>
+                            <p class="text-sm text-[#a3a3a3] leading-relaxed">Focus purely on teaching clients how to breathe, find neutral pelvis, and isolate their deep core. Keep it slow. Make them feel safe.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Level 2 -->
                 <div class="bg-subtle border border-subtle rounded-sm">
                     <button class="w-full text-left p-5 flex items-center justify-between focus:outline-none hover:bg-[#1a1a1a]" onclick="toggleFlipboard(this)">
                         <div class="flex items-center gap-6">
@@ -138,12 +174,11 @@
                     <div class="flipboard-content bg-[#0a0a0a] border-t border-subtle">
                         <div class="shepherd-content p-6">
                             <p class="text-sm text-[#a3a3a3] leading-relaxed mb-4"><strong>Vibe:</strong> Athletic, challenging, sweat-inducing.</p>
-                            <p class="text-sm text-[#a3a3a3] leading-relaxed">This is our core Reformer class. We introduce spring tension and altered gravity. The goal is to safely load the muscles to build strength while maintaining the Iron Skeleton.</p>
+                            <p class="text-sm text-[#a3a3a3] leading-relaxed">We introduce spring tension and altered gravity. Safely load the muscles to build strength while maintaining the Iron Skeleton.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Level 3 -->
                 <div class="bg-subtle border border-[#ff9800]/30 rounded-sm">
                     <button class="w-full text-left p-5 flex items-center justify-between focus:outline-none hover:bg-[#1a1a1a]" onclick="toggleFlipboard(this)">
                         <div class="flex items-center gap-6">
@@ -155,7 +190,7 @@
                     <div class="flipboard-content bg-[#0a0a0a] border-t border-subtle">
                         <div class="shepherd-content p-6">
                             <p class="text-sm text-[#a3a3a3] leading-relaxed mb-4"><strong>Vibe:</strong> Seamless, intense, euphoric.</p>
-                            <p class="text-sm text-[#a3a3a3] leading-relaxed">Advanced Reformer/Barrel class. High-endurance kinetic chain linking with minimal breaks. This class requires absolute room command.</p>
+                            <p class="text-sm text-[#a3a3a3] leading-relaxed">High-endurance kinetic chain linking with minimal breaks. This class requires absolute room command.</p>
                         </div>
                     </div>
                 </div>
@@ -164,7 +199,9 @@
     </div>
 
     <script>
+        let submitted = false; // Flag for iframe form submission
         let answers = { q1: '', q2: '', q3: '' };
+        let finalResult = '';
 
         function nextQ(current, answer) {
             answers['q' + current] = answer;
@@ -173,36 +210,52 @@
             document.getElementById('q' + (current + 1)).classList.add('fade-in');
         }
 
-        function calculateResult(answer) {
+        // Triggered after Q3. Hides Q3, Determines logic, Updates hidden form field, Shows Form.
+        function showLeadForm(answer) {
             answers['q3'] = answer;
             document.getElementById('q3').classList.add('hidden');
             
-            const resultBox = document.getElementById('result-container');
+            // Logic calculation
+            if(answers.q1 === 'A' || answers.q2 === 'A' || answers.q3 === 'A') {
+                finalResult = "Control";
+            } else {
+                finalResult = "Capacity";
+            }
+            
+            // Set hidden field in form before user submits
+            document.getElementById('hidden-class-result').value = finalResult;
+            
+            // Show the form
+            document.getElementById('lead-form-container').classList.remove('hidden');
+        }
+
+        // Triggered by the hidden iframe onload event after Google Script succeeds
+        function showResults() {
+            document.getElementById('lead-form-container').classList.add('hidden');
+            
             const rTitle = document.getElementById('result-title');
             const rDesc = document.getElementById('result-desc');
             const rAuth = document.getElementById('result-auth');
 
-            // The Routing Logic (Any 'A' = Control)
-            if(answers.q1 === 'A' || answers.q2 === 'A' || answers.q3 === 'A') {
+            if(finalResult === "Control") {
                 rTitle.innerText = "Optimum Control";
                 rTitle.className = "text-3xl font-serif text-white mb-4";
-                rDesc.innerText = "Your TVA (Transversus Abdominis) requires mechanical alignment. You are routed to Optimum Control to rebuild your foundation, isolate your deep core, and eliminate kinetic friction. Do not add load until the structure is secure.";
+                rDesc.innerText = "Your mechanics require foundational alignment. You are routed to Optimum Control to isolate your deep core and eliminate kinetic friction. Do not progress to Capacity until structure is secure.";
                 rAuth.innerText = "LEVEL 1: CLEARED";
             } else {
                 rTitle.innerText = "Optimum Capacity";
                 rTitle.className = "text-3xl font-serif text-[#3b82f6] mb-4";
-                rDesc.innerText = "Your baseline mechanics are stable. You are routed to Optimum Capacity to introduce altered gravity, spring tension, and athletic load. *Note: Flow State classes remain locked until you complete 10 Capacity sessions.*";
+                rDesc.innerText = "Your baseline mechanics are stable. You are routed to Optimum Capacity to introduce spring tension and athletic load. *Flow State remains locked until you complete baseline Capacity sessions.*";
                 rAuth.innerText = "LEVEL 2: CLEARED";
             }
 
-            resultBox.classList.remove('hidden');
+            document.getElementById('result-container').classList.remove('hidden');
+            window.scrollTo(0,0);
         }
 
-        // MISSING FUNCTION FIXED HERE: Handles the expanding/collapsing of taxonomy accordions
         function toggleFlipboard(button) {
             const content = button.nextElementSibling;
             const icon = button.querySelector('svg');
-            
             if (content.style.maxHeight) {
                 content.style.maxHeight = null;
                 content.classList.remove('expanded');
@@ -216,3 +269,8 @@
     </script>
 </body>
 </html>
+
+
+### DIRECT CHALLENGE
+
+Deploy this code to Vercel/GitHub immediately. Then, copy the transmission and send it to Graham. Do you have the discipline to wait for his operational patch, or will you bypass the system and run straight to the marketing team? Execute the system.
