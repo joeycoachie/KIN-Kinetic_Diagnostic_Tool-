@@ -7,29 +7,45 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e0e0e0; }
+        body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e0e0e0; -webkit-font-smoothing: antialiased; }
         .font-serif { font-family: 'Playfair Display', serif; }
         .protocol-id { font-family: 'Courier New', Courier, monospace; }
-        .fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .bg-subtle { background-color: #111; }
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.5s ease-in forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Flipboard Styles */
+        .flipboard-content {
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .flipboard-content.expanded { opacity: 1; }
+        
         .border-subtle { border-color: #222; }
+        .bg-subtle { background-color: #111; }
+        .text-accent { color: #888; }
+        
+        /* Loader */
+        .loader { border: 2px solid #333; border-top: 2px solid #4CAF50; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; margin-right: 8px; vertical-align: middle; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-6 py-12">
+<body class="min-h-screen flex flex-col items-center p-6 space-y-8 py-12">
 
-    <!-- DIAGNOSTIC CONTAINER -->
-    <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-8 md:p-12 rounded-sm shadow-2xl">
+    <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-8 md:p-12 rounded-sm shadow-2xl relative overflow-hidden">
         
         <div class="text-center mb-10 border-b border-[#222] pb-6">
-            <span class="protocol-id text-[#4CAF50] text-[10px] tracking-widest uppercase block mb-2">Architectural Diagnostic</span>
-            <h1 class="text-3xl font-serif text-white tracking-tight">Kinetic Baseline</h1>
-            <p class="text-[#888] text-sm mt-2">Identify your structure. Unlock your path.</p>
+            <span class="protocol-id text-[#4CAF50] text-[10px] tracking-widest uppercase block mb-2">Pre-Flight Calibration</span>
+            <h1 class="text-3xl font-serif text-white tracking-tight">Kinetic Diagnostic</h1>
+            <p class="text-[#888] text-sm mt-2">Identify your baseline. Secure your architecture.</p>
         </div>
 
         <div id="quiz-container">
+            <!-- Phase 1 -->
             <div id="q1" class="question-block">
-                <p class="protocol-id text-xs text-[#3b82f6] mb-3 tracking-widest uppercase">Phase 01: Core</p>
+                <p class="protocol-id text-xs text-[#3b82f6] mb-3 tracking-widest uppercase">Phase 01: Core Activation</p>
                 <h2 class="text-xl text-white mb-6 leading-relaxed">What happens when you try to brace your core (e.g., when you cough or laugh hard)?</h2>
                 <div class="space-y-3">
                     <button onclick="nextQ(1, 'A')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
@@ -41,9 +57,10 @@
                 </div>
             </div>
 
+            <!-- Phase 2 -->
             <div id="q2" class="question-block hidden">
                 <p class="protocol-id text-xs text-[#3b82f6] mb-3 tracking-widest uppercase">Phase 02: Structural Integrity</p>
-                <h2 class="text-xl text-white mb-6 leading-relaxed">Have you experienced lower back or neck pain during workouts in the last 6 months?</h2>
+                <h2 class="text-xl text-white mb-6 leading-relaxed">In the past 6 months, have you experienced lower back or neck pain during workouts?</h2>
                 <div class="space-y-3">
                     <button onclick="nextQ(2, 'A')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
                         [ A ] Yes, frequently. Or I am currently recovering from an injury.
@@ -56,103 +73,263 @@
 
             <div id="q3" class="question-block hidden">
                 <p class="protocol-id text-xs text-[#3b82f6] mb-3 tracking-widest uppercase">Phase 03: The Objective</p>
-                <h2 class="text-xl text-white mb-6 leading-relaxed">What is your primary goal for the next 90 days?</h2>
+                <h2 class="text-xl text-white mb-6 leading-relaxed">What is your primary objective for the next 90 days?</h2>
                 <div class="space-y-3">
-                    <button onclick="showLeadCapture('Control')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
-                        [ A ] Fix posture, stop hurting, and master the basics.
+                    <button onclick="nextQ(3, 'A')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                        [ A ] To fix my posture, stop hurting, and learn how to use my body safely.
                     </button>
-                    <button onclick="showLeadCapture('Capacity')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
-                        [ B ] Build athletic strength, tone up, and increase load.
+                    <button onclick="nextQ(3, 'B')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                        [ B ] To build athletic strength, build endurance, and challenge myself under load.
+                    </button>
+                    <button onclick="nextQ(3, 'C')" class="w-full text-left p-4 border border-[#333] hover:border-[#4CAF50] bg-[#111] hover:bg-[#1a1a1a] transition-colors rounded-sm text-sm text-[#a3a3a3] hover:text-white">
+                        [ C ] I am advanced. I want continuous, high-intensity flow and kinetic harmony.
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- LEAD CAPTURE -->
-        <div id="lead-capture" class="hidden fade-in">
-            <h2 class="text-xl text-white mb-6">Claim Your Diagnostic Report</h2>
-            <form id="lead-form" class="space-y-4">
-                <input type="hidden" name="Class_Result" id="class-result">
-                <input type="text" name="Name" required placeholder="Full Name" class="w-full bg-[#050505] border border-[#333] p-3 text-sm focus:border-[#4CAF50] outline-none">
-                <div class="flex gap-2">
-                    <select name="Country_Code" class="bg-[#050505] border border-[#333] p-3 text-sm w-1/3 text-[#888]">
-                        <option value="+60">+60 (MY)</option>
-                        <option value="+65">+65 (SG)</option>
-                    </select>
-                    <input type="tel" name="Phone" required placeholder="WhatsApp Number" class="w-full bg-[#050505] border border-[#333] p-3 text-sm focus:border-[#4CAF50] outline-none">
+        <div id="lead-capture-container" class="hidden text-center fade-in">
+            <h2 class="text-2xl font-serif text-white mb-2">Diagnostic Complete</h2>
+            <p class="text-[#a3a3a3] text-sm mb-6">Enter your details to generate your structural profile and unlock your assigned tier.</p>
+            
+            <form id="lead-capture-form" action="https://script.google.com/macros/s/AKfycbw1ScZ-8z8rcPyYEQw_URHA4iNx1uUTs_dtlLVu82H1aUsKSLr5Vx4sFJ89tmgRNeLH/exec" method="POST" class="max-w-sm mx-auto space-y-4 mb-4 text-left">
+                <input type="hidden" name="Class_Result" id="form-class-result" value="">
+                
+                <div>
+                    <label class="protocol-id text-[10px] text-[#888] tracking-widest uppercase block mb-1">Full Name</label>
+                    <input type="text" name="Name" required class="w-full bg-[#050505] border border-[#333] text-white p-3 rounded-sm focus:outline-none focus:border-[#4CAF50] text-sm">
                 </div>
-                <button type="submit" class="w-full bg-[#4CAF50] py-3 text-xs uppercase tracking-widest text-white">Unlock My Tier</button>
+                
+                <div>
+                    <label class="protocol-id text-[10px] text-[#888] tracking-widest uppercase block mb-1">WhatsApp Number</label>
+                    <div class="flex gap-2">
+                        <select name="Country_Code" class="bg-[#050505] border border-[#333] text-white p-3 rounded-sm focus:outline-none focus:border-[#4CAF50] text-sm w-[35%] shrink-0">
+                            <option value="+60">🇲🇾 +60</option>
+                            <option value="+65">🇸🇬 +65</option>
+                            <option value="+62">🇮🇩 +62</option>
+                            <option value="+66">🇹🇭 +66</option>
+                            <option value="+86">🇨🇳 +86</option>
+                            <option value="+1">🇺🇸 +1</option>
+                            <option value="+44">🇬🇧 +44</option>
+                            <option value="+61">🇦🇺 +61</option>
+                        </select>
+                        <input type="tel" name="Phone" required placeholder="123456789" class="w-full bg-[#050505] border border-[#333] text-white p-3 rounded-sm focus:outline-none focus:border-[#4CAF50] text-sm flex-1">
+                    </div>
+                </div>
+
+                <button type="submit" id="submit-btn" class="w-full bg-[#4CAF50] hover:bg-[#45a049] text-white py-3 rounded-sm transition-colors text-sm font-medium tracking-wide uppercase mt-4">
+                    <span id="btn-text">Unlock Tier</span>
+                </button>
             </form>
         </div>
 
-        <!-- TIER UNLOCK RESULT -->
         <div id="result-container" class="hidden text-center fade-in">
-            <h2 id="result-title" class="text-3xl font-serif text-white mb-4">Tier Authorized</h2>
-            <p id="result-desc" class="text-[#a3a3a3] text-sm leading-relaxed mb-6"></p>
-            <a href="https://wa.me/60102319893" id="booking-link" class="block w-full bg-[#222] hover:bg-[#4CAF50] py-3 text-xs uppercase tracking-widest text-white transition-colors">Book My Session</a>
+            <p class="protocol-id text-xs text-[#4CAF50] mb-3 tracking-widest uppercase">System Authorized</p>
+            <h2 id="result-title" class="text-3xl font-serif text-white mb-4">Class Allocation</h2>
+            <p id="result-desc" class="text-[#a3a3a3] text-sm leading-relaxed mb-8 max-w-md mx-auto">Description</p>
+            
+            <div class="p-4 border border-[#333] bg-[#111] inline-block text-left mb-8 w-full max-w-sm">
+                <div class="flex justify-between items-center mb-2 border-b border-[#222] pb-2">
+                    <span class="protocol-id text-[10px] text-[#888] tracking-widest uppercase">Clearance Level</span>
+                    <span id="result-auth" class="text-[#4CAF50] font-bold uppercase tracking-widest text-xs">AUTHORIZED</span>
+                </div>
+                <p class="text-xs text-[#555] italic">Your kinetic profile has been logged. Proceed to secure your session via WhatsApp below.</p>
+            </div>
+
+            <!-- Frictionless WhatsApp Booking Button -->
+            <a id="wa-booking-btn" href="#" target="_blank" class="block w-full max-w-sm mx-auto bg-[#222] hover:bg-[#4CAF50] text-white py-4 rounded-sm transition-colors text-sm font-medium tracking-widest uppercase mb-4 shadow-lg">
+                BOOK MY SESSION NOW
+            </a>
+
+            <button onclick="location.reload()" class="block w-full max-w-sm mx-auto border border-[#333] text-[#888] hover:text-white hover:border-[#888] py-3 text-xs uppercase tracking-widest transition-colors">Run New Diagnostic</button>
         </div>
+
     </div>
 
-    <!-- CLIENT-FACING TAXONOMY -->
-    <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-8 rounded-sm">
-        <h2 class="text-xl font-serif text-white mb-6 border-b border-[#222] pb-4">Optimum Fit Taxonomy</h2>
-        <div class="space-y-6">
-            <div>
-                <h4 class="font-bold text-white text-sm">Level 1: Optimum Control (The Foundation)</h4>
-                <p class="text-xs text-[#888] mt-2 leading-relaxed">Focuses on precision, neutral pelvis and deep core stability. Ideal for beginners, injury recovery, or anyone fixing movement mechanics. <br>⚙️ (Apparatus: Mat, Chair, Reformer).</p>
+    <!-- THE CLASS TAXONOMY REFERENCE (Client Facing) -->
+    <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-8 md:p-12 rounded-sm shadow-2xl relative overflow-hidden">
+        <section class="space-y-6">
+            <h2 class="text-2xl font-serif italic text-white flex items-center justify-between border-b border-[#222] pb-4">
+                The Optimum Fit Taxonomy
+                <span class="text-[10px] font-sans text-accent not-italic font-light tracking-widest uppercase">System Reference</span>
+            </h2>
+            
+            <p class="text-sm text-[#888] mb-4">The Rule of Thumb: If you are new or hurting, book <strong>Control</strong>. If you want to build athletic strength, book <strong>Capacity</strong>. If you want a seamless, intense challenge, book <strong>Flow</strong>.</p>
+            
+            <div class="space-y-4">
+                <!-- Level 1 -->
+                <div class="bg-subtle border border-subtle rounded-sm">
+                    <button class="w-full text-left p-5 flex items-center justify-between focus:outline-none hover:bg-[#1a1a1a]" onclick="toggleFlipboard(this)">
+                        <div class="flex items-center gap-6">
+                            <span class="protocol-id text-[#a3a3a3] text-sm w-20">LEVEL 1</span>
+                            <h4 class="text-lg font-serif text-white">Optimum Control</h4>
+                        </div>
+                        <svg class="w-5 h-5 text-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="flipboard-content bg-[#0a0a0a] border-t border-subtle">
+                        <div class="shepherd-content p-6">
+                            <p class="text-sm text-[#e0e0e0] leading-relaxed mb-4"><strong>The Foundation</strong></p>
+                            <p class="text-sm text-[#a3a3a3] leading-relaxed mb-4">Focuses on precision, neutral pelvis and deep core stability.</p>
+                            <p class="text-sm text-[#4CAF50] font-medium mb-4">Ideal for beginners, injury recovery, or anyone fixing movement mechanics.</p>
+                            <p class="protocol-id text-xs text-[#555] tracking-widest uppercase border-t border-[#222] pt-4">Apparatus: Mat, Chair, Reformer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 2 -->
+                <div class="bg-subtle border border-subtle rounded-sm">
+                    <button class="w-full text-left p-5 flex items-center justify-between focus:outline-none hover:bg-[#1a1a1a]" onclick="toggleFlipboard(this)">
+                        <div class="flex items-center gap-6">
+                            <span class="protocol-id text-[#3b82f6] text-sm w-20">LEVEL 2</span>
+                            <h4 class="text-lg font-serif text-white">Optimum Capacity</h4>
+                        </div>
+                        <svg class="w-5 h-5 text-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="flipboard-content bg-[#0a0a0a] border-t border-subtle">
+                        <div class="shepherd-content p-6">
+                            <p class="text-sm text-[#e0e0e0] leading-relaxed mb-4"><strong>The Athletic Build</strong></p>
+                            <p class="text-sm text-[#a3a3a3] leading-relaxed mb-4">Tests your limits. We use heavy spring resistance and volume to build muscular ENDURANCE and functional strength under LOAD.</p>
+                            <p class="protocol-id text-xs text-[#555] tracking-widest uppercase border-t border-[#222] pt-4">Apparatus: Reformer, Barrel</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 3 -->
+                <div class="bg-subtle border border-[#ff9800]/20 rounded-sm">
+                    <button class="w-full text-left p-5 flex items-center justify-between focus:outline-none hover:bg-[#1a1a1a]" onclick="toggleFlipboard(this)">
+                        <div class="flex items-center gap-6">
+                            <span class="protocol-id text-[#ff9800] text-sm w-20">LEVEL 3</span>
+                            <h4 class="text-lg font-serif text-white">Optimum Flow State</h4>
+                        </div>
+                        <svg class="w-5 h-5 text-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="flipboard-content bg-[#0a0a0a] border-t border-[#222]">
+                        <div class="shepherd-content p-6">
+                            <p class="text-sm text-[#e0e0e0] leading-relaxed mb-4"><strong>Kinetic Harmony</strong></p>
+                            <p class="text-sm text-[#a3a3a3] leading-relaxed mb-4">Continuous, uninterrupted motion linking complex sequences together. High heart rate, total body integration.</p>
+                            <p class="protocol-id text-xs text-[#555] tracking-widest uppercase border-t border-[#222] pt-4">Apparatus: Reformer, Barrel</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <h4 class="font-bold text-[#3b82f6] text-sm">Level 2: Optimum Capacity (The Build)</h4>
-                <p class="text-xs text-[#888] mt-2 leading-relaxed">Tests your limits. We use heavy spring resistance and volume to build muscular endurance and functional strength under load. <br>⚙️ (Apparatus: Reformer, Barrel).</p>
-            </div>
-            <div>
-                <h4 class="font-bold text-[#ff9800] text-sm">Level 3: Optimum Flow State (Kinetic Harmony)</h4>
-                <p class="text-xs text-[#888] mt-2 leading-relaxed">Continuous, uninterrupted motion linking complex sequences together. High heart rate, total body integration. For advanced clients. <br>⚙️ (Apparatus: Reformer, Barrel).</p>
-            </div>
-            <div class="pt-4 border-t border-[#222]">
-                <p class="text-xs text-[#4CAF50] font-semibold italic">"If you are new or hurting, book Control. If you want to build athletic strength, book Capacity. If you want a seamless, intense challenge, book Flow."</p>
-            </div>
-        </div>
+        </section>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw1ScZ-8z8rcPyYEQw_URHA4iNx1uUTs_dtlLVu82H1aUsKSLr5Vx4sFJ89tmgRNeLH/exec";
+        let rawAnswers = { q1: '', q2: '', q3: '' };
 
-        function nextQ(q, ans) {
-            document.getElementById('q' + q).classList.add('hidden');
-            document.getElementById('q' + (q+1)).classList.remove('hidden');
+        function nextQ(current, answer) {
+            rawAnswers['q' + current] = answer;
+            document.getElementById('q' + current).classList.add('hidden');
+            
+            if (current < 3) {
+                document.getElementById('q' + (current + 1)).classList.remove('hidden');
+                document.getElementById('q' + (current + 1)).classList.add('fade-in');
+            } else {
+                triggerLeadCapture();
+            }
         }
 
-        function showLeadCapture(tier) {
-            document.getElementById('q3').classList.add('hidden');
-            document.getElementById('class-result').value = tier;
-            document.getElementById('lead-capture').classList.remove('hidden');
+        function triggerLeadCapture() {
+            let tier = "";
+            // The Logic Gate (S-Rank Routing)
+            if (rawAnswers.q1 === 'A' || rawAnswers.q2 === 'A' || rawAnswers.q3 === 'A') {
+                tier = "Control";
+            } else if (rawAnswers.q3 === 'C') {
+                tier = "Flow";
+            } else {
+                tier = "Capacity";
+            }
+            
+            document.getElementById('form-class-result').value = tier;
+            document.getElementById('lead-capture-container').classList.remove('hidden');
+            document.getElementById('lead-capture-container').classList.add('fade-in');
         }
 
-        document.getElementById('lead-form').addEventListener('submit', function(e) {
+        // Webhook Submission Logic
+        document.getElementById('lead-capture-form').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Visual feedback
+            const btn = document.getElementById('submit-btn');
+            const btnText = document.getElementById('btn-text');
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+            btnText.innerHTML = '<span class="loader"></span> CALIBRATING...';
+            btn.disabled = true;
+
             const formData = new FormData(this);
-            fetch(SCRIPT_URL, { method: 'POST', body: formData })
-            .then(() => {
-                document.getElementById('lead-capture').classList.add('hidden');
-                showResult(document.getElementById('class-result').value);
+            
+            // Fire the webhook
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                // Regardless of success/fail, move them to the booking page. 
+                // We do not block the user funnel due to an API lag.
+                proceedToResult();
+            }).catch(error => {
+                console.error('Error logging lead:', error);
+                proceedToResult();
             });
         });
 
+        function proceedToResult() {
+            document.getElementById('lead-capture-container').classList.add('hidden');
+            const tier = document.getElementById('form-class-result').value;
+            showResult(tier);
+        }
+
         function showResult(tier) {
-            const container = document.getElementById('result-container');
-            const title = document.getElementById('result-title');
-            const desc = document.getElementById('result-desc');
-            
+            const rTitle = document.getElementById('result-title');
+            const rDesc = document.getElementById('result-desc');
+            const rAuth = document.getElementById('result-auth');
+            const waBtn = document.getElementById('wa-booking-btn');
+
+            let waMessage = "";
+
             if(tier === 'Control') {
-                title.innerText = "Authorized: Optimum Control";
-                desc.innerText = "Your body requires mechanical foundation. You are cleared for Control. Focus on precision and core stability before adding load.";
-            } else {
-                title.innerText = "Authorized: Optimum Capacity";
-                title.classList.add('text-[#3b82f6]');
-                desc.innerText = "Your baseline is secure. You are cleared for Capacity. We will introduce athletic load and spring resistance.";
+                rTitle.innerText = "Optimum Control";
+                rTitle.className = "text-3xl font-serif text-white mb-4";
+                rDesc.innerText = "Your mechanics require foundational alignment. You are assigned to Optimum Control to master precision, neutral pelvis, and deep core stability. Do not add load until your structure is secure.";
+                rAuth.innerText = "LEVEL 1: CLEARED";
+                rAuth.className = "text-[#e0e0e0] font-bold uppercase tracking-widest text-xs";
+                waMessage = "Hi! I just completed my Kinetic Diagnostic and unlocked Level 1: Optimum Control. I'm ready to architect my baseline and book my first session. What are the next steps?";
+            } else if(tier === 'Capacity') {
+                rTitle.innerText = "Optimum Capacity";
+                rTitle.className = "text-3xl font-serif text-[#3b82f6] mb-4";
+                rDesc.innerText = "Your baseline mechanics are stable. You are assigned to Optimum Capacity to test your limits. You are cleared for heavy spring resistance and load to build muscular endurance.";
+                rAuth.innerText = "LEVEL 2: CLEARED";
+                rAuth.className = "text-[#3b82f6] font-bold uppercase tracking-widest text-xs";
+                waMessage = "Hi! I just completed my Kinetic Diagnostic and unlocked Level 2: Optimum Capacity. I'm ready to build athletic strength and book my first session. What are the next steps?";
+            } else if(tier === 'Flow') {
+                rTitle.innerText = "Optimum Flow State";
+                rTitle.className = "text-3xl font-serif text-[#ff9800] mb-4";
+                rDesc.innerText = "You possess advanced structural integrity. You are assigned to Optimum Flow State for continuous, uninterrupted motion and total body integration.";
+                rAuth.innerText = "LEVEL 3: CLEARED";
+                rAuth.className = "text-[#ff9800] font-bold uppercase tracking-widest text-xs";
+                waMessage = "Hi! I just completed my Kinetic Diagnostic and unlocked Level 3: Optimum Flow State. I'm ready for kinetic harmony and want to book my session. What are the next steps?";
             }
-            container.classList.remove('hidden');
+
+            // WhatsApp link encoding
+            waBtn.href = "https://wa.me/60102319893?text=" + encodeURIComponent(waMessage);
+            
+            document.getElementById('result-container').classList.remove('hidden');
+        }
+
+        // Accordion UI Logic
+        function toggleFlipboard(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('svg');
+            
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.classList.remove('expanded');
+                if(icon) icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                content.classList.add('expanded');
+                if(icon) icon.style.transform = 'rotate(180deg)';
+            }
         }
     </script>
 </body>
