@@ -12,14 +12,13 @@
         .protocol-id { font-family: 'Courier New', Courier, monospace; }
         .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .flipboard-content { transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
-        .flipboard-content.expanded { opacity: 1; }
         .bg-subtle { background-color: #111; }
         .border-subtle { border-color: #222; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-6 py-12">
 
+    <!-- DIAGNOSTIC CONTAINER -->
     <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-8 md:p-12 rounded-sm shadow-2xl">
         
         <div class="text-center mb-10 border-b border-[#222] pb-6">
@@ -69,6 +68,7 @@
             </div>
         </div>
 
+        <!-- LEAD CAPTURE -->
         <div id="lead-capture" class="hidden fade-in">
             <h2 class="text-xl text-white mb-6">Claim Your Diagnostic Report</h2>
             <form id="lead-form" class="space-y-4">
@@ -85,34 +85,38 @@
             </form>
         </div>
 
+        <!-- TIER UNLOCK RESULT -->
         <div id="result-container" class="hidden text-center fade-in">
             <h2 id="result-title" class="text-3xl font-serif text-white mb-4">Tier Authorized</h2>
             <p id="result-desc" class="text-[#a3a3a3] text-sm leading-relaxed mb-6"></p>
-            <a href="#" id="booking-link" class="block w-full bg-[#222] hover:bg-[#4CAF50] py-3 text-xs uppercase tracking-widest text-white transition-colors">Book My Session</a>
+            <a href="https://wa.me/60102319893" id="booking-link" class="block w-full bg-[#222] hover:bg-[#4CAF50] py-3 text-xs uppercase tracking-widest text-white transition-colors">Book My Session</a>
         </div>
     </div>
 
+    <!-- CLIENT-FACING TAXONOMY -->
     <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-8 rounded-sm">
-        <h2 class="text-xl font-serif text-white mb-6 border-b border-[#222] pb-4">Our Movement Tiers</h2>
-        <div class="space-y-4">
-            <div class="bg-subtle border border-subtle p-4">
-                <h4 class="font-bold text-white text-sm">Control: The Foundation</h4>
-                <p class="text-xs text-[#888] mt-1">For precision, stability, and pain-free movement. Start here if you are new or fixing mechanics.</p>
+        <h2 class="text-xl font-serif text-white mb-6 border-b border-[#222] pb-4">Optimum Fit Taxonomy</h2>
+        <div class="space-y-6">
+            <div>
+                <h4 class="font-bold text-white text-sm">Level 1: Optimum Control (The Foundation)</h4>
+                <p class="text-xs text-[#888] mt-2 leading-relaxed">Focuses on precision, neutral pelvis and deep core stability. Ideal for beginners, injury recovery, or anyone fixing movement mechanics. <br>⚙️ (Apparatus: Mat, Chair, Reformer).</p>
             </div>
-            <div class="bg-subtle border border-subtle p-4">
-                <h4 class="font-bold text-[#3b82f6] text-sm">Capacity: The Athletic Build</h4>
-                <p class="text-xs text-[#888] mt-1">For strength, stamina, and resilience. We add resistance to push your body's limits.</p>
+            <div>
+                <h4 class="font-bold text-[#3b82f6] text-sm">Level 2: Optimum Capacity (The Build)</h4>
+                <p class="text-xs text-[#888] mt-2 leading-relaxed">Tests your limits. We use heavy spring resistance and volume to build muscular endurance and functional strength under load. <br>⚙️ (Apparatus: Reformer, Barrel).</p>
             </div>
-            <div class="bg-subtle border border-subtle p-4">
-                <h4 class="font-bold text-[#ff9800] text-sm">Flow State: Kinetic Harmony</h4>
-                <p class="text-xs text-[#888] mt-1">For movement mastery. Continuous, advanced sequences linking mind and body.</p>
+            <div>
+                <h4 class="font-bold text-[#ff9800] text-sm">Level 3: Optimum Flow State (Kinetic Harmony)</h4>
+                <p class="text-xs text-[#888] mt-2 leading-relaxed">Continuous, uninterrupted motion linking complex sequences together. High heart rate, total body integration. For advanced clients. <br>⚙️ (Apparatus: Reformer, Barrel).</p>
+            </div>
+            <div class="pt-4 border-t border-[#222]">
+                <p class="text-xs text-[#4CAF50] font-semibold italic">"If you are new or hurting, book Control. If you want to build athletic strength, book Capacity. If you want a seamless, intense challenge, book Flow."</p>
             </div>
         </div>
     </div>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw1ScZ-8z8rcPyYEQw_URHA4iNx1uUTs_dtlLVu82H1aUsKSLr5Vx4sFJ89tmgRNeLH/exec";
-        let answers = {};
 
         function nextQ(q, ans) {
             document.getElementById('q' + q).classList.add('hidden');
@@ -145,6 +149,7 @@
                 desc.innerText = "Your body requires mechanical foundation. You are cleared for Control. Focus on precision and core stability before adding load.";
             } else {
                 title.innerText = "Authorized: Optimum Capacity";
+                title.classList.add('text-[#3b82f6]');
                 desc.innerText = "Your baseline is secure. You are cleared for Capacity. We will introduce athletic load and spring resistance.";
             }
             container.classList.remove('hidden');
