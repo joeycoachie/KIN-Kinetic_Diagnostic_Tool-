@@ -212,6 +212,11 @@
                     </div>
                 </div>
             </div>
+
+            <button onclick="bookNow()" class="block w-full bg-[#4CAF50] hover:bg-[#45a049] text-white py-4 rounded-sm transition-colors text-sm font-medium tracking-widest uppercase shadow-lg mt-2">
+                Book Now
+            </button>
+            <p class="text-center text-[10px] text-[#555] tracking-widest uppercase -mt-2">Takes you back to the 3-question diagnostic above</p>
         </section>
     </div>
 
@@ -233,7 +238,13 @@
         function triggerLeadCapture() {
             let tier = "";
             // The Logic Gate (S-Rank Routing)
-            if (rawAnswers.q1 === 'A' || rawAnswers.q2 === 'A' || rawAnswers.q3 === 'A') {
+            // Q3=A is a direct goal-match, honored on its own.
+            // Q1+Q2 only force Control when BOTH red flags compound — a single
+            // isolated flag (e.g. an athletic Valsalva brace, or one old healed
+            // strain) no longer blocks Flow on its own.
+            if (rawAnswers.q3 === 'A') {
+                tier = "Control";
+            } else if (rawAnswers.q1 === 'A' && rawAnswers.q2 === 'A') {
                 tier = "Control";
             } else if (rawAnswers.q3 === 'C') {
                 tier = "Flow";
@@ -272,6 +283,21 @@
                 proceedToResult();
             });
         });
+
+        function bookNow() {
+            // Reset any in-progress or completed diagnostic back to Phase 01.
+            rawAnswers = { q1: '', q2: '', q3: '' };
+
+            document.getElementById('lead-capture-container').classList.add('hidden');
+            document.getElementById('result-container').classList.add('hidden');
+
+            document.getElementById('q1').classList.remove('hidden');
+            document.getElementById('q2').classList.add('hidden');
+            document.getElementById('q3').classList.add('hidden');
+
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
         function proceedToResult() {
             document.getElementById('lead-capture-container').classList.add('hidden');
