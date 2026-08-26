@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://moe-master-gate.vercel.app/diagnostic",
+      "permanent": true
+    }
+  ]
+}
