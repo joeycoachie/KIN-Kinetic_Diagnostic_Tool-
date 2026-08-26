@@ -32,13 +32,13 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-6 space-y-8 py-12">
+<body class="min-h-screen flex flex-col items-center p-4 sm:p-6 space-y-6 sm:space-y-8 py-8 sm:py-12">
 
-    <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-8 md:p-12 rounded-sm shadow-2xl relative overflow-hidden">
+    <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-5 sm:p-8 md:p-12 rounded-sm shadow-2xl relative overflow-hidden">
         
         <div class="text-center mb-10 border-b border-[#222] pb-6">
             <span class="protocol-id text-[#4CAF50] text-[10px] tracking-widest uppercase block mb-2">Pre-Flight Calibration</span>
-            <h1 class="text-3xl font-serif text-white tracking-tight">Kinetic Diagnostic</h1>
+            <h1 class="text-2xl sm:text-3xl font-serif text-white tracking-tight">Kinetic Diagnostic</h1>
             <p class="text-[#888] text-sm mt-2">Identify your baseline. Secure your architecture.</p>
         </div>
 
@@ -103,7 +103,7 @@
                 <div>
                     <label class="protocol-id text-[10px] text-[#888] tracking-widest uppercase block mb-1">WhatsApp Number</label>
                     <div class="flex gap-2">
-                        <select name="Country_Code" class="bg-[#050505] border border-[#333] text-white p-3 rounded-sm focus:outline-none focus:border-[#4CAF50] text-sm w-[35%] shrink-0">
+                        <select name="Country_Code" class="bg-[#050505] border border-[#333] text-white p-3 rounded-sm focus:outline-none focus:border-[#4CAF50] text-sm w-[40%] sm:w-[35%] shrink-0">
                             <option value="+60">🇲🇾 +60</option>
                             <option value="+65">🇸🇬 +65</option>
                             <option value="+62">🇮🇩 +62</option>
@@ -113,7 +113,7 @@
                             <option value="+44">🇬🇧 +44</option>
                             <option value="+61">🇦🇺 +61</option>
                         </select>
-                        <input type="tel" name="Phone" required placeholder="123456789" class="w-full bg-[#050505] border border-[#333] text-white p-3 rounded-sm focus:outline-none focus:border-[#4CAF50] text-sm flex-1">
+                        <input type="tel" name="Phone" required placeholder="123456789" class="w-full min-w-0 bg-[#050505] border border-[#333] text-white p-3 rounded-sm focus:outline-none focus:border-[#4CAF50] text-sm flex-1">
                     </div>
                 </div>
 
@@ -125,7 +125,7 @@
 
         <div id="result-container" class="hidden text-center fade-in">
             <p class="protocol-id text-xs text-[#4CAF50] mb-3 tracking-widest uppercase">System Authorized</p>
-            <h2 id="result-title" class="text-3xl font-serif text-white mb-4">Class Allocation</h2>
+            <h2 id="result-title" class="text-2xl sm:text-3xl font-serif text-white mb-4">Class Allocation</h2>
             <p id="result-desc" class="text-[#a3a3a3] text-sm leading-relaxed mb-8 max-w-md mx-auto">Description</p>
             
             <div class="p-4 border border-[#333] bg-[#111] inline-block text-left mb-8 w-full max-w-sm">
@@ -147,7 +147,7 @@
     </div>
 
     <!-- THE CLASS TAXONOMY REFERENCE (Client Facing) -->
-    <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-8 md:p-12 rounded-sm shadow-2xl relative overflow-hidden">
+    <div class="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-5 sm:p-8 md:p-12 rounded-sm shadow-2xl relative overflow-hidden">
         <section class="space-y-6">
             <h2 class="text-2xl font-serif italic text-white flex items-center justify-between border-b border-[#222] pb-4">
                 The Optimum Fit Taxonomy
@@ -160,8 +160,8 @@
                 <!-- Level 1 -->
                 <div class="bg-subtle border border-subtle rounded-sm">
                     <button class="w-full text-left p-5 flex items-center justify-between focus:outline-none hover:bg-[#1a1a1a]" onclick="toggleFlipboard(this)">
-                        <div class="flex items-center gap-6">
-                            <span class="protocol-id text-[#a3a3a3] text-sm w-20">LEVEL 1</span>
+                        <div class="flex items-center gap-3 sm:gap-6">
+                            <span class="protocol-id text-[#a3a3a3] text-xs sm:text-sm w-14 sm:w-20 shrink-0">LEVEL 1</span>
                             <h4 class="text-lg font-serif text-white">Optimum Control</h4>
                         </div>
                         <svg class="w-5 h-5 text-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 9l-7 7-7-7"></path></svg>
@@ -179,8 +179,8 @@
                 <!-- Level 2 -->
                 <div class="bg-subtle border border-subtle rounded-sm">
                     <button class="w-full text-left p-5 flex items-center justify-between focus:outline-none hover:bg-[#1a1a1a]" onclick="toggleFlipboard(this)">
-                        <div class="flex items-center gap-6">
-                            <span class="protocol-id text-[#3b82f6] text-sm w-20">LEVEL 2</span>
+                        <div class="flex items-center gap-3 sm:gap-6">
+                            <span class="protocol-id text-[#3b82f6] text-xs sm:text-sm w-14 sm:w-20 shrink-0">LEVEL 2</span>
                             <h4 class="text-lg font-serif text-white">Optimum Capacity</h4>
                         </div>
                         <svg class="w-5 h-5 text-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 9l-7 7-7-7"></path></svg>
@@ -197,8 +197,8 @@
                 <!-- Level 3 -->
                 <div class="bg-subtle border border-[#ff9800]/20 rounded-sm">
                     <button class="w-full text-left p-5 flex items-center justify-between focus:outline-none hover:bg-[#1a1a1a]" onclick="toggleFlipboard(this)">
-                        <div class="flex items-center gap-6">
-                            <span class="protocol-id text-[#ff9800] text-sm w-20">LEVEL 3</span>
+                        <div class="flex items-center gap-3 sm:gap-6">
+                            <span class="protocol-id text-[#ff9800] text-xs sm:text-sm w-14 sm:w-20 shrink-0">LEVEL 3</span>
                             <h4 class="text-lg font-serif text-white">Optimum Flow State</h4>
                         </div>
                         <svg class="w-5 h-5 text-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 9l-7 7-7-7"></path></svg>
@@ -216,8 +216,15 @@
             <button onclick="bookNow()" class="block w-full bg-[#4CAF50] hover:bg-[#45a049] text-white py-4 rounded-sm transition-colors text-sm font-medium tracking-widest uppercase shadow-lg mt-2">
                 Book Now
             </button>
-            <p class="text-center text-[10px] text-[#555] tracking-widest uppercase -mt-2">Takes you back to the 3-question diagnostic above</p>
         </section>
+    </div>
+
+    <!-- ISOLATED ENTERPRISE FOOTER -->
+    <div class="w-full pt-4 mt-auto">
+        <footer class="w-full border-t border-[#222] pt-8 pb-4 text-center">
+            <p class="protocol-id text-[10px] text-[#4CAF50] tracking-[0.2em] uppercase mb-2">Cleared For Human Performance</p>
+            <p class="protocol-id text-[10px] text-[#555] tracking-[0.2em] uppercase">&copy; 2026 The M.O.E. Group. All Rights Reserved.</p>
+        </footer>
     </div>
 
     <script>
